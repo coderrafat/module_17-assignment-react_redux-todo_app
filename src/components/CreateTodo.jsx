@@ -22,7 +22,7 @@ const CreateTodo = () => {
     } else {
       dispatch(AddTodo(taskInput.current.value));
 
-      taskInput.current.value = " ";
+      taskInput.current.value = "";
 
       toast.success("New task has been added!", {
         position: "top-right",
