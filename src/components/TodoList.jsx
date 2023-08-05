@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux";
 import { DeleteTodo } from "./DeleteTodo";
-// import { DeleteTodo } from "./DeleteTodo";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { UpdateTodo } from "./UpdateTodo.js";
 
 const TodoList = () => {
   const taskItems = useSelector((state) => state.todo.value);
@@ -23,10 +25,18 @@ const TodoList = () => {
                   <tr key={i.toString()}>
                     <td>{item}</td>
                     <td>
-                      <button className="btn btn-sm btn-dark">Edit</button>
+                      <button
+                        onClick={() => UpdateTodo(item, i)}
+                        className="btn btn-sm btn-dark"
+                      >
+                        Edit
+                      </button>
                     </td>
                     <td>
-                      <button onClick={DeleteTodo()} className="btn btn-danger">
+                      <button
+                        onClick={(i) => DeleteTodo(i)}
+                        className="btn btn-danger"
+                      >
                         Remove
                       </button>
                     </td>
@@ -37,6 +47,18 @@ const TodoList = () => {
           </table>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };
