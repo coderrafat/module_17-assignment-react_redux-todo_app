@@ -1,64 +1,88 @@
+import { ToogleMark } from "../redux/slice/todoSlice";
+import { removeTodo } from "./DeleteTodo";
+import { EditTodo } from "./UpdateTodo";
+import store from "../redux/store/store";
 import { useSelector } from "react-redux";
-import { DeleteTodo } from "./DeleteTodo";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { UpdateTodo } from "./UpdateTodo.js";
-
+import { ToastContainer, toast } from "react-toastify";
 const TodoList = () => {
-  const taskItems = useSelector((state) => state.todo.value);
+  const todoItems = useSelector((state) => state.todo);
+
+  if (!todoItems.length) {
+    return <div className="text-center">No Task</div>;
+  }
+
+  const checkboxHandler = (i) => {
+    store.dispatch(ToogleMark(i));
+  };
+  const removeHandler = (i) => {
+    removeTodo(i);
+  };
+  const editHandler = (i) => {
+    EditTodo(i);
+  };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-12">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Task</th>
-                <th>Edit</th>
-                <th>Remove</th>
-              </tr>
-            </thead>
-            <tbody>
-              {taskItems.map((item, i) => {
-                return (
-                  <tr key={i.toString()}>
-                    <td>{item}</td>
-                    <td>
-                      <button
-                        onClick={() => UpdateTodo(item, i)}
-                        className="btn btn-sm btn-dark"
-                      >
-                        Edit
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        onClick={(i) => DeleteTodo(i)}
-                        className="btn btn-danger"
-                      >
-                        Remove
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+    <div>
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Mark</th>
+                  <th>Task</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {todoItems &&
+                  todoItems.map((item) => {
+                    return (
+                      <tr key={item.id}>
+                        <td>
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            checked={item.completed}
+                            onChange={() => checkboxHandler(item.id)}
+                          />
+                        </td>
+                        <td>
+                          <p
+                            className={`${
+                              item.completed
+                                ? "text-decoration-line-through"
+                                : ""
+                            }`}
+                          >
+                            {item.text}
+                          </p>
+                        </td>
+                        <td>
+                          <button
+                            className="btn btn-dark btn-sm"
+                            onClick={() => editHandler(item.id)}
+                          >
+                            Edit
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => removeHandler(item.id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
     </div>
   );
 };

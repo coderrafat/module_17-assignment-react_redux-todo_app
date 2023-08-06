@@ -1,30 +1,24 @@
-import Swal from "sweetalert2";
-import store from "../redux/store/store";
-import { EditTodo } from "../redux/slice/todoSlice";
-import { toast } from 'react-toastify'
+import Swal from "sweetalert2"
+import store from "../redux/store/store"
+import { editTodo } from "../redux/slice/todoSlice"
 
-export const UpdateTodo = (item, i) => {
-    Swal.fire({
-        title: "Update Task",
-        input: "text",
-        inputValue: item,
-        showCancelButton: true,
-        inputValidator: (value) => {
-            if (value) {
-                store.dispatch(EditTodo({ task: value, index: i }))
-
-                toast.success('Task has been Updated!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                });
-            }
-        }
+export const EditTodo = async (i) => {
+    const { value: text } = await Swal.fire({
+        input: 'textarea',
+        inputLabel: 'Task',
+        inputValue: store.getState().todo.find((todo) => todo.id === i).text,
+        inputAttributes: {
+            'aria-label': 'Type your message here'
+        },
+        showCancelButton: true
     })
-}
 
+    if (text) {
+        store.dispatch(editTodo({ id: i, text }))
+        Swal.fire(
+            "Success",
+            "",
+            "success"
+        )
+    }
+}
