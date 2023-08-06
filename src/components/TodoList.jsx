@@ -6,6 +6,11 @@ import { useSelector } from "react-redux";
 
 const TodoList = () => {
   const todoItems = useSelector((state) => state.todo);
+
+  if (!todoItems.length) {
+    return <div className="text-center">No Task</div>;
+  }
+
   const checkboxHandler = (i) => {
     store.dispatch(ToogleMark(i));
   };
@@ -27,7 +32,7 @@ const TodoList = () => {
                   <th>Mark</th>
                   <th>Task</th>
                   <th>Edit</th>
-                  <th>Remove</th>
+                  <th>Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -37,6 +42,7 @@ const TodoList = () => {
                       <tr key={item.id}>
                         <td>
                           <input
+                            className="form-check-input"
                             type="checkbox"
                             checked={item.completed}
                             onChange={() => checkboxHandler(item.id)}
@@ -66,7 +72,7 @@ const TodoList = () => {
                             className="btn btn-danger btn-sm"
                             onClick={() => removeHandler(item.id)}
                           >
-                            Remove
+                            Delete
                           </button>
                         </td>
                       </tr>
