@@ -20,14 +20,11 @@ const CreateTodo = () => {
         theme: "dark",
       });
     } else {
-      dispatch(
-        AddTodo({
-          id: Date.now(),
-          text: taskInput.current.value,
-          completed: false,
-        })
-      );
-      toast.success("Task has been added!", {
+      dispatch(AddTodo(taskInput.current.value));
+
+      taskInput.current.value = " ";
+
+      toast.success("New task has been added!", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
