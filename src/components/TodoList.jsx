@@ -3,14 +3,9 @@ import { removeTodo } from "./DeleteTodo";
 import { EditTodo } from "./UpdateTodo";
 import store from "../redux/store/store";
 import { useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+
 const TodoList = () => {
   const todoItems = useSelector((state) => state.todo);
-
-  if (!todoItems.length) {
-    return <div className="text-center">No Task</div>;
-  }
-
   const checkboxHandler = (i) => {
     store.dispatch(ToogleMark(i));
   };
@@ -32,7 +27,7 @@ const TodoList = () => {
                   <th>Mark</th>
                   <th>Task</th>
                   <th>Edit</th>
-                  <th>Delete</th>
+                  <th>Remove</th>
                 </tr>
               </thead>
               <tbody>
@@ -42,7 +37,6 @@ const TodoList = () => {
                       <tr key={item.id}>
                         <td>
                           <input
-                            className="form-check-input"
                             type="checkbox"
                             checked={item.completed}
                             onChange={() => checkboxHandler(item.id)}
@@ -72,7 +66,7 @@ const TodoList = () => {
                             className="btn btn-danger btn-sm"
                             onClick={() => removeHandler(item.id)}
                           >
-                            Delete
+                            Remove
                           </button>
                         </td>
                       </tr>
